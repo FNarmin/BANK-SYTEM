@@ -1,0 +1,13 @@
+@import url(./components/wrapper.css);
+@import url(./components/form.css);
+@import url(./reset.css);
+@import url(https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200&family=Roboto:ital,wght@1,100&display=swap);
+@import url(./components/pages_1&2.css);
+@import url(./components/button.css);
+body {
+ font-family: 'Plus Jakarta Sans', sans-serif;
+ box-sizing: border-box;
+}
+form  {
+    width: 40%;
+}
