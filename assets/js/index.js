@@ -16,18 +16,17 @@ class QeydiyyatFormasi {
         }} else if (x.value.length>3 && x.value.length<9) {
             for (let i = 0; i<x.value.length; i++) {
                 var code = x.value.charCodeAt(i);
-                if (!(code>=65 && code<=90) || !(code>=97 && code<=122)) {
+                if ((code>=65 && code<=90) || (code>=97 && code<=122)) {
+                    continue;
+                } else {
                 throw new NameError("Ad yalnız hərflərdən ibarət olmalıdır.");
+                }}
+                x.classList.remove("error");
+                const p = x.parentNode.querySelector("p.error-text");
+                if (p) {
+                    x.parentNode.removeChild(p);
                 }
-        }
-    } else {
-        x.classList.remove("error");
-        // const p = x.parentNode.querySelector("p.error-text");
-        if (p) {
-            p.parentNode.removeChild(p);
-        }
-    }
-}
+}}
 validateSurname (x) {
     if (x.value.length<3 || x.value.length>15) {
         x.value = x.value.trim();
@@ -38,18 +37,19 @@ validateSurname (x) {
         }} else if (x.value.length>3 && x.value.length<15) {
             for (let i = 0; i<x.value.length; i++) {
                 var code = x.value.charCodeAt(i);
-                if (!(code>=65 && code<=90) || !(code>=97 && code<=122)) {
-                throw new SurnameError("Soyad yalnız hərflərdən ibarət olmalıdır.");
+                if ((code>=65 && code<=90) || (code>=97 && code<=122)){
+                    continue;
+                } else {
+                    throw new SurnameError("Soyad yalnız hərflərdən ibarət olmalıdır.");
+                    }
+            }        
+               x.classList.remove("error");
+                const p = x.parentNode.querySelector("p.error-text");
+                if (p) {
+                    x.parentNode.removeChild(p);
+                }
                 }
     }
-} else {
-    x.classList.remove("error");
-    const p = x.parentNode.querySelector("p.error-text");
-    if (p) {
-        p.parentNode.removeChild(p);
-    }
-}
-}
 validateEmail (x) {
     x.value = x.value.trim();
     if (!x.value) {
@@ -60,7 +60,7 @@ validateEmail (x) {
         x.classList.remove("error");
         const p = x.parentNode.querySelector("p.error-text")
         if (p) {
-            p.parentNode.removeChild(p);
+            x.parentNode.removeChild(p);
         }
     }   
 }
@@ -74,7 +74,7 @@ validatePassword (x) {
         x.classList.remove("error");
         const p = x.parentNode.querySelector("p.error-text");
         if (p) {
-            p.parentNode.removeChild(p);
+            x.parentNode.removeChild(p);
         }
     }
 }
@@ -86,20 +86,21 @@ validateRetypePassword (x, y) {
         throw new SamePasswordError("Təkrar şifrə doğru deyil.");
     } else {
         x.classList.remove("error");
-        const p = x.parentNode.querySelector("p.error-text");
+         const p = x.parentNode.querySelector("p.error-text");
+        console.log(p.innerText);
         if (p) {
-            p.parentNode.removeChild(p);
+            x.parentNode.removeChild(p);
         } 
     }
 }
 showError (inp, xeta) {
     inp.classList.add('error');
-    var p = inp.parentNode.querySelector("p.error-text");
-
+   var  p =inp.parentNode.querySelector("p");
+   console.log(p);
     if (!p) {
-       p = document.createElement('p');  
-    }
-    inp.parentNode.append(p);
+     p = document.createElement('p');
+       inp.parentNode.append(p);
+    } 
     p.classList.add('error-text');
     p.innerText = xeta.toString();
     console.log(p.innerText);
@@ -108,7 +109,7 @@ showError (inp, xeta) {
 const qeydiyyatFormasi = new QeydiyyatFormasi();
 form.addEventListener("submit", function(e){
     e.preventDefault();
-    const f = e.target;
+    var f = e.target;
 try {
      qeydiyyatFormasi.validateName(f.name);
      window.localStorage.setItem("name", f.name.value);
