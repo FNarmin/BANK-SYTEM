@@ -6,7 +6,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    row-gap: 14px;
+    /* row-gap: 14px;; */
     position: absolute;
     right: 0px;
     top: 0px;
@@ -36,7 +36,7 @@ form .checkbox {
     font-weight: 600;
     word-wrap: break-word;
 }
-.form p {
+.form p1 {
     margin: 0;
     color: #ABABAB;
 font-size: 18px;
@@ -56,4 +56,11 @@ form input {
     border-radius: 5px;
     padding: 10px;
     margin-top: 5px;
+}
+.error {
+    border: 1px solid red;
+}
+.error-text {
+    color: brown;
+    font-size: 16px;
 }
