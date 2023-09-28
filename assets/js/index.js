@@ -13,10 +13,10 @@ class QeydiyyatFormasi {
             throw new EmptyInput("Adınızı qeyd etmeyi unutmusunuz!"); 
         } else {
             throw new NameError("Adınız düzgün daxil edilməyib(3-9 hərfdən təşkil olunmalıdır)!");
-        }} else if (x.value.length>3 || x.value.length<9) {
+        }} else if (x.value.length>3 && x.value.length<9) {
             for (let i = 0; i<x.value.length; i++) {
                 var code = x.value.charCodeAt(i);
-                if ((!code>=65 && !code<=90) || (!code>=97 && !code<=122)) {
+                if (!(code>=65 && code<=90) || !(code>=97 && code<=122)) {
                 throw new NameError("Ad yalnız hərflərdən ibarət olmalıdır.");
                 }
         }
@@ -31,15 +31,14 @@ class QeydiyyatFormasi {
 validateSurname (x) {
     if (x.value.length<3 || x.value.length>15) {
         x.value = x.value.trim();
-        console.log(x.value);
         if (!x.value) {
             throw new EmptyInput("Soyadınızı qeyd etmeyi unutmusunuz!"); 
         } else {
             throw new SurnameError("Soyadınız düzgün daxil edilməyib(3-15 hərfdən təşkil olunmalıdır)!");
-        }} else if (x.value.length>3 || x.value.length<15) {
+        }} else if (x.value.length>3 && x.value.length<15) {
             for (let i = 0; i<x.value.length; i++) {
                 var code = x.value.charCodeAt(i);
-                if ((!code>=65 && !code<=90) || (!code>=97 && !code<=122)) {
+                if (!(code>=65 && code<=90) || !(code>=97 && code<=122)) {
                 throw new SurnameError("Soyad yalnız hərflərdən ibarət olmalıdır.");
                 }
     }
@@ -98,11 +97,12 @@ showError (inp, xeta) {
     var p = inp.parentNode.querySelector("p.error-text");
 
     if (!p) {
-       p = document.createElement('p');
-           inp.parentNode.append(p);
+       p = document.createElement('p');  
     }
+    inp.parentNode.append(p);
     p.classList.add('error-text');
     p.innerText = xeta.toString();
+    console.log(p.innerText);
 }
 }
 const qeydiyyatFormasi = new QeydiyyatFormasi();
@@ -111,28 +111,29 @@ form.addEventListener("submit", function(e){
     const f = e.target;
 try {
      qeydiyyatFormasi.validateName(f.name);
-     localStorage.setItem("name", f.name.value);
+     window.localStorage.setItem("name", f.name.value);
+
 } catch (err) {
     qeydiyyatFormasi.showError(f.name, err);
 }
 
 try{
     qeydiyyatFormasi.validateSurname(f.surname);
-    localStorage.setItem("surname", f.surname.value);
+    window.localStorage.setItem("surname", f.surname.value);
 } catch(err) {
     qeydiyyatFormasi.showError(f.surname, err);
 }
 
 try{
   qeydiyyatFormasi.validateEmail(f.email);
-  localStorage.setItem("email", f.email);
+  window.localStorage.setItem("email", f.email.value);
 } catch(err) {
   qeydiyyatFormasi.showError(f.email, err);
 }
 
 try {
 qeydiyyatFormasi.validatePassword(f.password);
-
+window.localStorage.setItem("password", f.password.value)
 } catch (err) {
 qeydiyyatFormasi.showError(f.password, err);
 }
@@ -142,22 +143,8 @@ qeydiyyatFormasi.showError(f.password, err);
     qeydiyyatFormasi.showError(f.password1, err);
  }
 })
+//  if(!showError(f.name, err) && !showError(f.surname, err) && !showError(!f.email, err) && !showError(f.password, err) && !showError(f.password1, err)) {
+// window.location.href="./../../../entry_page.html";
+//  }
+// })
 
-//     name: "",
-//     surname: "",
-//     eMail: "",
-//     password: "",
-//     rules: false,
-//     control_name: function() {
-
-//     },
-//     control_surname: function(){
-
-//     },
-//     control_password: function(){
-
-//     },
-//     control_rules: function(){
-
-//     }
-// }
