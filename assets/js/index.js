@@ -5,13 +5,16 @@ class SurnameError extends Error{}
 class EmailError extends Error{}
 class PasswordError extends Error{}
 class SamePasswordError extends Error{}
+class notAgreeError extends Error{}
 class QeydiyyatFormasi {
     validateName (x) {
+        // adin duzgunluyunu yoxlayiriq
         if (x.value.length<3 || x.value.length>9) {
             x.value = x.value.trim();
+            console.log(x.value.length);
         if (!x.value) {
             throw new EmptyInput("Adınızı qeyd etmeyi unutmusunuz!"); 
-        } else {
+        } else{
             throw new NameError("Adınız düzgün daxil edilməyib(3-9 hərfdən təşkil olunmalıdır)!");
         }} else if (x.value.length>3 && x.value.length<9) {
             for (let i = 0; i<x.value.length; i++) {
@@ -20,13 +23,15 @@ class QeydiyyatFormasi {
                     continue;
                 } else {
                 throw new NameError("Ad yalnız hərflərdən ibarət olmalıdır.");
-                }}
-                x.classList.remove("error");
-                const p = x.parentNode.querySelector("p.error-text");
-                if (p) {
-                    x.parentNode.removeChild(p);
-                }
-}}
+                }}}
+                    x.classList.remove("error");
+                    const p = x.nextElementSibling;
+                    if (p) {
+                        p.remove();
+                    }
+                    return "ok";
+                }   
+//soyadin duzgunluyunu yoxlayiriq 
 validateSurname (x) {
     if (x.value.length<3 || x.value.length>15) {
         x.value = x.value.trim();
@@ -44,12 +49,14 @@ validateSurname (x) {
                     }
             }        
                x.classList.remove("error");
-                const p = x.parentNode.querySelector("p.error-text");
-                if (p) {
-                    x.parentNode.removeChild(p);
-                }
+               const p = x.nextElementSibling;
+                    if (p) {
+                        p.remove(p, x.nextElementSibling);
+                    }
+                    return "ok"
                 }
     }
+// emailin duzgunluyunu yoxlayiriq
 validateEmail (x) {
     x.value = x.value.trim();
     if (!x.value) {
@@ -58,26 +65,30 @@ validateEmail (x) {
         throw new EmailError("Email formatı səhvdir!");
     } else {
         x.classList.remove("error");
-        const p = x.parentNode.querySelector("p.error-text")
+        const p = x.nextElementSibling;
         if (p) {
-            x.parentNode.removeChild(p);
+            p.remove();
         }
+        return "ok"
     }   
 }
+// passwordun duzgunluyunu yoxlayiriq
 validatePassword (x) {
     x.value = x.value.trim();
     if (!x.value) {
         throw new EmptyInput("Şifrəni daxil etməyi unutmusunuz.");
     } else if (x.value.length <8 || x.value.length>12) {
       throw new PasswordError("Şifrə 8-12 elementdən təşkil olunmalıdır.");
-    } else {
+    }  else {
         x.classList.remove("error");
-        const p = x.parentNode.querySelector("p.error-text");
+        const p = x.nextElementSibling;
         if (p) {
-            x.parentNode.removeChild(p);
+           p.innerText = "";
         }
-    }
+        return "ok"
+    }   
 }
+// tekrar passwordun uygunlugunu yoxlayiriq
 validateRetypePassword (x, y) {
     x.value = x.value.trim();
     if(!x.value) {
@@ -86,55 +97,68 @@ validateRetypePassword (x, y) {
         throw new SamePasswordError("Təkrar şifrə doğru deyil.");
     } else {
         x.classList.remove("error");
-         const p = x.parentNode.querySelector("p.error-text");
-        console.log(p.innerText);
-        if (p) {
-            x.parentNode.removeChild(p);
-        } 
+        const p = x.nextElementSibling;
+            if (p) {
+                 p.remove();
+             }
+             return "ok"
     }
 }
+// qaydalarla razi olub olunmadigini yoxlayiriq
+validateCheckbox (x) {
+    if (!x.checked) {
+        throw new notAgreeError("Qaydalarla razı deyilsiniz!");
+    } else {
+        x.classList.remove("error");
+        const p = x.nextElementSibling;
+        if (p) {
+            p.remove();
+        }
+      return "ok"
+    }
+}
+// errorlar chixanda neler bash vermeli oldugu qeyd edilib
 showError (inp, xeta) {
     inp.classList.add('error');
-   var  p =inp.parentNode.querySelector("p");
-   console.log(p);
-    if (!p) {
+    var p =inp.nextElementSibling;
+       console.log(p);
+       if(!p) {
      p = document.createElement('p');
-       inp.parentNode.append(p);
-    } 
-    p.classList.add('error-text');
+    inp.parentNode.insertBefore(p, inp.nextElementSibling);
+       }
+       p.style.color = "red";
+       p.style.fontSize = "0.8em";
     p.innerText = xeta.toString();
     console.log(p.innerText);
 }
 }
+// class yeni json obyektine menimsedilib
 const qeydiyyatFormasi = new QeydiyyatFormasi();
 form.addEventListener("submit", function(e){
     e.preventDefault();
     var f = e.target;
+// errorlar askar edilir 
 try {
      qeydiyyatFormasi.validateName(f.name);
-     window.localStorage.setItem("name", f.name.value);
-
 } catch (err) {
-    qeydiyyatFormasi.showError(f.name, err);
+    qeydiyyatFormasi.showError(f.name, err); 
 }
 
 try{
     qeydiyyatFormasi.validateSurname(f.surname);
-    window.localStorage.setItem("surname", f.surname.value);
 } catch(err) {
     qeydiyyatFormasi.showError(f.surname, err);
 }
 
 try{
-  qeydiyyatFormasi.validateEmail(f.email);
-  window.localStorage.setItem("email", f.email.value);
+  qeydiyyatFormasi.validateEmail(f.email);  
 } catch(err) {
   qeydiyyatFormasi.showError(f.email, err);
 }
 
 try {
 qeydiyyatFormasi.validatePassword(f.password);
-window.localStorage.setItem("password", f.password.value)
+
 } catch (err) {
 qeydiyyatFormasi.showError(f.password, err);
 }
@@ -143,9 +167,17 @@ qeydiyyatFormasi.showError(f.password, err);
  } catch(err) {
     qeydiyyatFormasi.showError(f.password1, err);
  }
+ try {
+    qeydiyyatFormasi.validateCheckbox(f.agree);
+ } catch (err) {
+    qeydiyyatFormasi.showError(f.agree, err);
+ }
+//  eger error yoxdursa hamisi ok dirse onda email ve password localda saxlanilir ve yeni sehifeye kecir
+ if (qeydiyyatFormasi.validateName(f.name) == "ok" && qeydiyyatFormasi.validateSurname(f.surname) == "ok" && qeydiyyatFormasi.validateEmail(f.email)== "ok" && qeydiyyatFormasi.validatePassword(f.password) == "ok" && qeydiyyatFormasi.validateRetypePassword(f.password1, f.password) == "ok" && qeydiyyatFormasi.validateCheckbox(f.agree)=="ok") {
+    window.localStorage.setItem("email", f.email.value);
+    window.localStorage.setItem("password", f.password.value);
+    window.location.href = "./assets/pages/login.html"
+ }
 })
-//  if(!showError(f.name, err) && !showError(f.surname, err) && !showError(!f.email, err) && !showError(f.password, err) && !showError(f.password1, err)) {
-// window.location.href="./../../../entry_page.html";
-//  }
-// })
+
 

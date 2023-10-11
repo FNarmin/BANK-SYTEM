@@ -20,9 +20,9 @@ form {
     display: flex;
     flex-direction: column;
 }
-form input {
+/* form input {
     margin-bottom: 14px;
-}
+} */
 form .checkbox {
     display: flex;
     flex-direction: row;
@@ -36,7 +36,7 @@ form .checkbox {
     font-weight: 600;
     word-wrap: break-word;
 }
-.form p1 {
+.form p {
     margin: 0;
     color: #ABABAB;
 font-size: 18px;
@@ -56,11 +56,18 @@ form input {
     border-radius: 5px;
     padding: 10px;
     margin-top: 5px;
+    margin-bottom: 0.5em;
 }
 .error {
-    border: 1px solid red;
+    border: 2px solid red;
+    color: red;
 }
 .error-text {
-    color: brown;
+    color: red;
     font-size: 16px;
 }
+.error-input {
+    border: 2px solid red;
+    color: red;
+}
+

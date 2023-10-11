@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./../css/style.css">
+    <script src="./../js/login.js" defer></script>
     <title>Document</title>
 </head>
 <body>
@@ -12,21 +13,19 @@
     <h1>Eecamp Bank</h1>
     <h2>Xoş gəlmisiz!</h2>
     <div id="logo_img">
-        <img  src="./assets/images/Abstraction.png" alt="logo">
+        <img  src="./../images/Abstraction.png" alt="logo">
         </div>
 </div>
 <div class="form">
     <h3>Daxil olmag üçün e-mail və şifrəni daxil edin!</h3>
     <p>Qeydiyyatdan keçdikdən sonra, siz daxil ola bilərsiz!</p>
-    <form>
+    <form id="register-form">
     <label for="email">E-mail ünvanınız</label>
     <input type="email" id="email" name="email">
     <label for="password">Şifrə</label>
     <input type="password" id="password" name="password">
-    <div class="checkbox">
-    <input type="checkbox" id="save" name="save" >
     <label for="save">Məni yadda saxla</label>
-</div>
+    <input type="checkbox" id="save" name="save">
     <input type="submit" value="Qeydiyyat" class="button">
 </form>
 </div>
